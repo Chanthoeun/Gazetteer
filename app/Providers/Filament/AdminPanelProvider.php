@@ -7,6 +7,7 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -23,6 +24,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use LaraZeus\SpatieTranslatable\SpatieTranslatablePlugin;
 use Mchev\Banhammer\Middleware\AuthBanned;
 use Mchev\Banhammer\Middleware\LogoutBanned;
+use Tapp\FilamentAuthenticationLog\FilamentAuthenticationLogPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -46,6 +48,14 @@ class AdminPanelProvider extends PanelProvider
                 AccountWidget::class,
                 FilamentInfoWidget::class,
             ])
+            ->navigationGroups([
+                NavigationGroup::make()
+                    ->label(__('general.nav.administration'))
+                    ->icon('heroicon-o-cog-8-tooth'),
+                NavigationGroup::make()
+                    ->label(__('general.nav.logs'))
+                    ->icon('heroicon-o-clipboard-document-list'),
+            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -68,8 +78,9 @@ class AdminPanelProvider extends PanelProvider
                     ->defaultLocales(['en', 'km']),
                 FilamentShieldPlugin::make()
                     ->navigationLabel(__('role.plural'))
-                    ->navigationGroup(__('general.nav_group.administration'))
+                    ->navigationGroup(__('general.nav.administration'))
                     ->navigationSort(2),
+                FilamentAuthenticationLogPlugin::make()
             ])
             ->maxContentWidth(Width::Full)
             ->unsavedChangesAlerts()

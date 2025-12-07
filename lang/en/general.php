@@ -2,8 +2,9 @@
 
 return [
     //Navigation Group
-    'nav_group' => [
+    'nav' => [
         'administration' => 'Administration',
+        'logs' => 'Logs',
     ],
 
     //General

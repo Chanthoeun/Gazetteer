@@ -11,6 +11,7 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\Width;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -20,6 +21,8 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use LaraZeus\SpatieTranslatable\SpatieTranslatablePlugin;
+use Mchev\Banhammer\Middleware\AuthBanned;
+use Mchev\Banhammer\Middleware\LogoutBanned;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -55,14 +58,22 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->authMiddleware([
+                LogoutBanned::class,
+                AuthBanned::class,
                 Authenticate::class,
             ])
             ->plugins([
-                FilamentShieldPlugin::make(),
                 SpatieTranslatablePlugin::make()
                     ->persist()
-                    ->defaultLocales(['en', 'km'])
+                    ->defaultLocales(['en', 'km']),
+                FilamentShieldPlugin::make()
+                    ->navigationLabel(__('role.plural'))
+                    ->navigationGroup(__('general.nav_group.administration'))
+                    ->navigationSort(2),
             ])
-            ->viteTheme('resources/css/filament/admin/th1eme.css');
+            ->maxContentWidth(Width::Full)
+            ->unsavedChangesAlerts()
+            ->sidebarCollapsibleOnDesktop()
+            ->viteTheme('resources/css/filament/admin/theme.css');
     }
 }

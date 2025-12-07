@@ -8,12 +8,15 @@ use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Mchev\Banhammer\Traits\Bannable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, Notifiable, Bannable, HasRoles, LogsActivity;
 
     /**
      * The attributes that are mass assignable.
@@ -47,6 +50,22 @@ class User extends Authenticatable implements FilamentUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get the activity log options for the model.
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('User')
+            ->logOnly([
+                'name',
+                'email',
+            ])
+            ->setDescriptionForEvent(fn(string $eventName) => "User has been {$eventName}")
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 
     public function canAccessPanel(Panel $panel): bool

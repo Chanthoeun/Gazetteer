@@ -13,11 +13,12 @@ use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
+use TomatoPHP\FilamentLanguageSwitcher\Traits\InteractsWithLanguages;
 
 class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, Bannable, HasRoles, LogsActivity, AuthenticationLoggable;
+    use HasFactory, Notifiable, Bannable, HasRoles, LogsActivity, AuthenticationLoggable, InteractsWithLanguages;
 
     /**
      * The attributes that are mass assignable.

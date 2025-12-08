@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -34,7 +35,6 @@ class Type extends Model
     {
         return [
             'id' => 'integer',
-            'name' => 'array',
         ];
     }
 
@@ -51,5 +51,10 @@ class Type extends Model
             ->setDescriptionForEvent(fn(string $eventName) => "Type has been {$eventName}")
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
+    }
+
+    public function places(): HasMany
+    {
+        return $this->hasMany(Place::class);
     }
 }

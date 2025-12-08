@@ -25,6 +25,7 @@ use LaraZeus\SpatieTranslatable\SpatieTranslatablePlugin;
 use Mchev\Banhammer\Middleware\AuthBanned;
 use Mchev\Banhammer\Middleware\LogoutBanned;
 use Tapp\FilamentAuthenticationLog\FilamentAuthenticationLogPlugin;
+use TomatoPHP\FilamentLanguageSwitcher\FilamentLanguageSwitcherPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -66,6 +67,7 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                \TomatoPHP\FilamentLanguageSwitcher\Http\Middleware\LanguageMiddleware::class,
             ])
             ->authMiddleware([
                 LogoutBanned::class,
@@ -73,18 +75,20 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->plugins([
+                FilamentLanguageSwitcherPlugin::make(),
                 SpatieTranslatablePlugin::make()
-                    ->persist()
                     ->defaultLocales(['en', 'km']),
                 FilamentShieldPlugin::make()
                     ->navigationLabel(__('role.plural'))
                     ->navigationGroup(__('general.nav.administration'))
                     ->navigationSort(2),
-                FilamentAuthenticationLogPlugin::make()
+                FilamentAuthenticationLogPlugin::make(),
             ])
             ->maxContentWidth(Width::Full)
             ->unsavedChangesAlerts()
             ->sidebarCollapsibleOnDesktop()
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('30s')
             ->viteTheme('resources/css/filament/admin/theme.css');
     }
 }

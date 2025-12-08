@@ -3,3 +3,8 @@
 
 @source '../../../../app/Filament/**/*';
 @source '../../../../resources/views/filament/**/*';
+
+/* khmer font */
+html[lang="km"] {
+    --font-family: 'Battambang', sans-serif;
+}

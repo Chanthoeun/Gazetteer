@@ -30,7 +30,7 @@ class Place extends Model
         'geo_boundary',
         'reference',
         'issued_date',
-        'note',
+        'official_note',
     ];
 
     /**
@@ -66,7 +66,7 @@ class Place extends Model
                 'geo_boundary',
                 'reference',
                 'issued_date',
-                'note',
+                'official_note',
             ])
             ->setDescriptionForEvent(fn(string $eventName) => "Place has been {$eventName}")
             ->logOnlyDirty()
@@ -91,5 +91,23 @@ class Place extends Model
     public function backups(): HasMany
     {
         return $this->hasMany(Backup::class);
+    }
+
+    public function getAllDescendantIds(): array
+    {
+        $allDescendantIds = [];
+        $levelIds = [$this->id];
+
+        while (count($levelIds) > 0) {
+            $childrenIds = self::whereIn('parent_id', $levelIds)->pluck('id')->toArray();
+            if (count($childrenIds) > 0) {
+                $allDescendantIds = array_merge($allDescendantIds, $childrenIds);
+                $levelIds = $childrenIds;
+            } else {
+                $levelIds = [];
+            }
+        }
+
+        return $allDescendantIds;
     }
 }

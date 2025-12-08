@@ -17,7 +17,7 @@ class BackupFactory extends Factory
         return [
             'place_id' => Place::factory(),
             'type_id' => Type::factory(),
-            'parent_id' => Parent::factory(),
+            'parent_id' => parent::factory(),
             'code' => fake()->regexify('[A-Za-z0-9]{10}'),
             'khmer' => fake()->regexify('[A-Za-z0-9]{150}'),
             'latin' => fake()->regexify('[A-Za-z0-9]{150}'),
@@ -26,7 +26,7 @@ class BackupFactory extends Factory
             'geo_boundary' => fake()->word(),
             'reference' => fake()->word(),
             'issued_date' => fake()->date(),
-            'note' => fake()->text(),
+            'official_note' => fake()->text(),
         ];
     }
 }

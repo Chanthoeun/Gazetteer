@@ -31,7 +31,7 @@ class Backup extends Model
         'geo_boundary',
         'reference',
         'issued_date',
-        'note',
+        'official_note',
     ];
 
     /**
@@ -69,7 +69,7 @@ class Backup extends Model
                 'geo_boundary',
                 'reference',
                 'issued_date',
-                'note',
+                'official_note',
             ])
             ->setDescriptionForEvent(fn(string $eventName) => "Backup has been {$eventName}")
             ->logOnlyDirty()

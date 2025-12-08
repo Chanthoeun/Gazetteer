@@ -11,13 +11,16 @@
     "require": {
         "php": "^8.2",
         "bezhansalleh/filament-shield": "^4.0",
+        "eightynine/filament-excel-import": "^4.0",
         "filament/filament": "^4.3",
         "lara-zeus/spatie-translatable": "^1.0",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
+        "maatwebsite/excel": "^3.1",
         "mchev/banhammer": "^2.4",
         "pxlrbt/filament-activity-log": "^2.0",
         "tapp/filament-authentication-log": "^5.0",
+        "tomatophp/filament-language-switcher": "^4.0",
         "torann/geoip": "^3.0"
     },
     "require-dev": {
